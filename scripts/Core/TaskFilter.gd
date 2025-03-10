@@ -9,18 +9,9 @@ var time_range: String = "all_time"
 
 # Time range options
 const TIME_RANGES = {
-    "all_time": {
-        "start": 0,
-        "end": 9223372036854775807  # Max int64
-    },
-    "today": {
-        "start": 0,  # Will be calculated
-        "end": 0    # Will be calculated
-    },
-    "this_week": {
-        "start": 0,  # Will be calculated
-        "end": 0    # Will be calculated
-    }
+    "all_time": {"days": -1},
+    "today": {"days": 1},
+    "this_week": {"days": 7}
 }
 
 func _ready() -> void:
@@ -30,7 +21,7 @@ func apply_filters(tasks: Array) -> Array:
     var filtered_tasks: Array = []
     
     for task in tasks:
-        if task is Task and _passes_filters(task):
+        if _task_matches_filters(task):
             filtered_tasks.append(task)
     
     return filtered_tasks
@@ -43,11 +34,9 @@ func set_status_filter(statuses: Array) -> void:
     status_filter = statuses
     emit_signal("filters_changed")
 
-func set_time_range(range_type: String) -> void:
-    if range_type in TIME_RANGES:
-        time_range = range_type
-        _update_time_ranges()
-        emit_signal("filters_changed")
+func set_time_range(range: String) -> void:
+    time_range = range
+    emit_signal("filters_changed")
 
 func clear_filters() -> void:
     priority_filter.clear()
@@ -55,21 +44,25 @@ func clear_filters() -> void:
     time_range = "all_time"
     emit_signal("filters_changed")
 
-func _passes_filters(task: Task) -> bool:
-    # Check priority filter
+func _task_matches_filters(task: Task) -> bool:
+    # Priority filter
     if priority_filter.size() > 0 and not task.priority in priority_filter:
         return false
     
-    # Check status filter
+    # Status filter
     if status_filter.size() > 0:
         var task_status = "completed" if task.completed else "pending"
         if not task_status in status_filter:
             return false
     
-    # Check time range
-    var ranges = TIME_RANGES[time_range]
-    if task.creation_time < ranges.start or task.creation_time > ranges.end:
-        return false
+    # Time range filter
+    if time_range != "all_time":
+        var days = TIME_RANGES[time_range]["days"]
+        var current_time = Time.get_unix_time_from_system()
+        var time_diff = current_time - task.creation_time
+        
+        if time_diff > days * 86400:  # 86400 seconds in a day
+            return false
     
     return true
 

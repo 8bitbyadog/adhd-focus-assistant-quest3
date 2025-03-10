@@ -24,11 +24,11 @@ func _initialize_passthrough() -> void:
         return
     
     var result = xr_interface.start_passthrough()
-    is_passthrough_enabled = (result == OK)
-    
-    if is_passthrough_enabled:
+    if result == OK:
+        is_passthrough_enabled = true
         print("Passthrough started successfully")
     else:
+        is_passthrough_enabled = false
         print("Failed to start passthrough")
     
     # Emit initial state

@@ -10,10 +10,6 @@ const GRAB_THRESHOLD := 0.7
 const MENU_GESTURE_TIME := 1.0  # Hold pinch for 1 second to open menu
 const FILTER_GESTURE_TIME := 0.8  # Hold pinch for 0.8 seconds to open filter
 
-# XR Hand constants
-const XR_HAND_LEFT := 0
-const XR_HAND_RIGHT := 1
-
 # Hand states
 var left_hand_active := false
 var right_hand_active := false
@@ -79,14 +75,14 @@ func _process(delta: float) -> void:
 
 func _update_hand_states() -> void:
     # Update left hand
-    left_hand_active = xr_interface.is_hand_tracked(XR_HAND_LEFT)
+    left_hand_active = xr_interface.is_hand_tracked(0)  # 0 for left hand
     if left_hand_active:
-        left_pinch_strength = xr_interface.get_hand_pinch_strength(XR_HAND_LEFT)
+        left_pinch_strength = xr_interface.get_hand_pinch_strength(0)
     
     # Update right hand
-    right_hand_active = xr_interface.is_hand_tracked(XR_HAND_RIGHT)
+    right_hand_active = xr_interface.is_hand_tracked(1)  # 1 for right hand
     if right_hand_active:
-        right_pinch_strength = xr_interface.get_hand_pinch_strength(XR_HAND_RIGHT)
+        right_pinch_strength = xr_interface.get_hand_pinch_strength(1)
 
 func _check_gestures() -> void:
     # Check left hand gestures
@@ -173,7 +169,7 @@ func _update_hand_feedback(feedback: Node3D, transform: Transform3D, pinch_stren
         feedback.update_progress(pinch_strength)
 
 func get_hand_transform(hand: String) -> Transform3D:
-    var hand_index = XR_HAND_LEFT if hand == "left" else XR_HAND_RIGHT
+    var hand_index = 0 if hand == "left" else 1
     if xr_interface and xr_interface.is_initialized():
         return xr_interface.get_hand_transform(hand_index)
     return Transform3D()

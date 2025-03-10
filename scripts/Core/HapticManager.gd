@@ -31,7 +31,13 @@ func trigger_haptic(hand: String, pattern: String) -> void:
     
     if pattern in PATTERNS:
         var params = PATTERNS[pattern]
-        _trigger_single_haptic(controller, params)
+        controller.trigger_haptic_pulse(
+            params["frequency"],
+            params["amplitude"],
+            params["duration"],
+            0.0,  # Start delay
+            0.0   # Duration scale
+        )
 
 func _trigger_single_haptic(controller: XRController3D, data: Dictionary) -> void:
     controller.trigger_haptic_pulse(
