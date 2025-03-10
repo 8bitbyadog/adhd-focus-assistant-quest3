@@ -68,12 +68,14 @@ func _get_grabbing_hand_transform() -> Transform3D:
             return hand_tracking.get_hand_transform("right")
     return Transform3D()
 
-func set_task_data(task_data: TaskSystem.Task) -> void:
+func set_task_data(task_data: Task) -> void:
     task_id = task_data.id
     if task_data.spatial_position != Vector3.ZERO:
         global_position = task_data.spatial_position
-    if task_data.spatial_rotation != Quaternion.IDENTITY:
-        global_transform.basis = Basis(task_data.spatial_rotation)
+        initial_position = global_position
+    
+    # Update rotation if needed
+    initial_rotation = global_transform.basis.get_rotation_quaternion()
 
 func _on_task_updated() -> void:
     var task_data = task_system.get_task(task_id)

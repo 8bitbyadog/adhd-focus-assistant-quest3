@@ -11,26 +11,7 @@ func save_tasks(tasks: Dictionary) -> void:
     # Convert task objects to serializable dictionaries
     for task_id in tasks:
         var task = tasks[task_id]
-        task_data[task_id] = {
-            "id": task.id,
-            "title": task.title,
-            "description": task.description,
-            "priority": task.priority,
-            "completed": task.completed,
-            "spatial_position": {
-                "x": task.spatial_position.x,
-                "y": task.spatial_position.y,
-                "z": task.spatial_position.z
-            },
-            "spatial_rotation": {
-                "x": task.spatial_rotation.x,
-                "y": task.spatial_rotation.y,
-                "z": task.spatial_rotation.z,
-                "w": task.spatial_rotation.w
-            },
-            "creation_time": task.creation_time,
-            "completion_time": task.completion_time
-        }
+        task_data[task_id] = task.to_dict()
     
     # Create JSON string
     var json_string = JSON.stringify(task_data)
@@ -64,29 +45,7 @@ func load_tasks() -> Dictionary:
             # Convert dictionaries back to task objects
             for task_id in task_data:
                 var data = task_data[task_id]
-                var task = TaskSystem.Task.new(
-                    data.id,
-                    data.title,
-                    data.description,
-                    data.priority
-                )
-                
-                # Restore additional properties
-                task.completed = data.completed
-                task.spatial_position = Vector3(
-                    data.spatial_position.x,
-                    data.spatial_position.y,
-                    data.spatial_position.z
-                )
-                task.spatial_rotation = Quaternion(
-                    data.spatial_rotation.x,
-                    data.spatial_rotation.y,
-                    data.spatial_rotation.z,
-                    data.spatial_rotation.w
-                )
-                task.creation_time = data.creation_time
-                task.completion_time = data.completion_time
-                
+                var task = Task.from_dict(data)
                 tasks[task_id] = task
     else:
         push_error("Failed to load tasks from file")
