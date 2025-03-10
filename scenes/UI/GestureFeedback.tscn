@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8n5gx4r3y0m7"]
+
+[ext_resource type="Script" path="res://scripts/UI/GestureFeedback.gd" id="1_x5y6p"]
+
+[node name="GestureFeedback" type="Node3D"]
+script = ExtResource("1_x5y6p") 
