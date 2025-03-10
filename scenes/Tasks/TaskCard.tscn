@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c8n7gx4r3y0m5"]
 
-[ext_resource type="Script" path="res://scripts/Interaction/GrabbableTaskCard.gd" id="1_u4v2p"]
+[ext_resource type="Script" uid="uid://bh02qddigflec" path="res://scripts/Interaction/GrabbableTaskCard.gd" id="1_u4v2p"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_k8j2r"]
 size = Vector2(0.3, 0.2)
@@ -99,4 +99,4 @@ surface_material_override/0 = SubResource("StandardMaterial3D_q8r3p")
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("BoxShape3D_v6k2r") 
+shape = SubResource("BoxShape3D_v6k2r")

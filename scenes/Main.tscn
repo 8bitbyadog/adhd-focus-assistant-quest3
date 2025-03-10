@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://b8ckqx0myyed1"]
+[gd_scene load_steps=10 format=3 uid="uid://b8ckqx0myyed1"]
 
-[ext_resource type="Script" path="res://scripts/Core/PassthroughManager.gd" id="1_2p4m3"]
-[ext_resource type="Script" path="res://scripts/Core/HandTrackingController.gd" id="2_3k4n5"]
-[ext_resource type="Script" path="res://scripts/Core/UIManager.gd" id="3_4l5m6"]
-[ext_resource type="Script" path="res://scripts/Core/TaskSystem.gd" id="4_5m6n7"]
-[ext_resource type="Script" path="res://scripts/Core/TaskManager.gd" id="5_6n7o8"]
+[ext_resource type="Script" uid="uid://b5du2djblfcdi" path="res://scripts/Core/PassthroughManager.gd" id="1_2p4m3"]
+[ext_resource type="Script" uid="uid://bpxdaa06yoncr" path="res://scripts/Core/HandTrackingController.gd" id="2_3k4n5"]
+[ext_resource type="Script" uid="uid://pamcd6wl1xby" path="res://scripts/Core/UIManager.gd" id="3_4l5m6"]
+[ext_resource type="Script" uid="uid://jnngcwohgwwh" path="res://scripts/Core/TaskSystem.gd" id="4_5m6n7"]
+[ext_resource type="Script" uid="uid://cd0j8awdqj6hn" path="res://scripts/Core/TaskManager.gd" id="5_6n7o8"]
+[ext_resource type="Script" uid="uid://w7bsqu84ebks" path="res://scripts/Core/TaskStorage.gd" id="6_7p8q9"]
+[ext_resource type="Script" uid="uid://bay1d8sdkxqw6" path="res://scripts/Core/HapticManager.gd" id="7_8r9s0"]
+[ext_resource type="Script" uid="uid://bbbp2xqtwyvj" path="res://scripts/Core/TaskFilter.gd" id="8_9t0u1"]
+[ext_resource type="Script" uid="uid://bb6mtojmkedsb" path="res://scripts/Core/TaskSorter.gd" id="9_0u1v2"]
 
 [node name="Main" type="Node3D"]
 
@@ -32,4 +36,16 @@ script = ExtResource("3_4l5m6")
 script = ExtResource("4_5m6n7")
 
 [node name="TaskManager" type="Node3D" parent="."]
-script = ExtResource("5_6n7o8") 
+script = ExtResource("5_6n7o8")
+
+[node name="TaskStorage" type="Node" parent="."]
+script = ExtResource("6_7p8q9")
+
+[node name="HapticManager" type="Node" parent="."]
+script = ExtResource("7_8r9s0")
+
+[node name="TaskFilter" type="Node" parent="."]
+script = ExtResource("8_9t0u1")
+
+[node name="TaskSorter" type="Node" parent="."]
+script = ExtResource("9_0u1v2")

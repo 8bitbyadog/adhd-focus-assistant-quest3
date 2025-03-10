@@ -14,17 +14,18 @@ func _ready() -> void:
         print("OpenXR initialized successfully")
         
         # Initialize passthrough
-        if xr_interface.is_passthrough_supported():
-            _initialize_passthrough()
-        else:
-            print("Passthrough not supported on this device")
+        _initialize_passthrough()
     else:
         print("OpenXR not initialized")
 
 func _initialize_passthrough() -> void:
-    # Start passthrough
-    var passthrough_result = xr_interface.start_passthrough()
-    is_passthrough_enabled = passthrough_result == OK
+    if not xr_interface.is_passthrough_supported():
+        print("Passthrough not supported on this device")
+        return
+    
+    var result = xr_interface.start_passthrough()
+    is_passthrough_enabled = (result == OK)
+    
     if is_passthrough_enabled:
         print("Passthrough started successfully")
     else:
@@ -41,7 +42,8 @@ func toggle_passthrough() -> void:
         xr_interface.stop_passthrough()
         is_passthrough_enabled = false
     else:
-        is_passthrough_enabled = xr_interface.start_passthrough() == OK
+        var result = xr_interface.start_passthrough()
+        is_passthrough_enabled = (result == OK)
     
     emit_signal("passthrough_toggled", is_passthrough_enabled)
 

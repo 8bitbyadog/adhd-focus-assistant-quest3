@@ -13,6 +13,7 @@ signal deselected
 var hand_tracking: Node
 var task_system: Node
 var ui_manager: Node
+var haptic_manager: Node
 var is_grabbed: bool = false
 var grabbing_hand: String = ""
 var initial_grab_offset: Vector3
@@ -22,6 +23,7 @@ func _ready() -> void:
     hand_tracking = get_node("/root/Main/HandTrackingController")
     task_system = get_node("/root/Main/TaskSystem")
     ui_manager = get_node("/root/Main/UIManager")
+    haptic_manager = get_node("/root/Main/HapticManager")
     
     # Connect to hand tracking signals
     hand_tracking.connect("gesture_detected", _on_gesture_detected)
@@ -47,6 +49,9 @@ func _grab(hand: String, hand_transform: Transform3D) -> void:
     initial_grab_offset = global_transform.origin - hand_transform.origin
     initial_grab_rotation = Quaternion(global_transform.basis)
     
+    # Trigger haptic feedback
+    haptic_manager.trigger_haptic(hand, "grab")
+    
     emit_signal("grabbed", hand)
     ui_manager.set_active_panel(name)
 
@@ -54,6 +59,10 @@ func _release() -> void:
     if is_grabbed:
         is_grabbed = false
         var released_hand = grabbing_hand
+        
+        # Trigger haptic feedback
+        haptic_manager.trigger_haptic(released_hand, "release")
+        
         grabbing_hand = ""
         
         # Update task position in system

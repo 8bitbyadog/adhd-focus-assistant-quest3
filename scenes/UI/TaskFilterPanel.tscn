@@ -1,0 +1,160 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4n5gx4r3y0m6"]
+
+[ext_resource type="Script" uid="uid://nmo0p7arrwbf" path="res://scripts/UI/TaskFilterPanel.gd" id="1_x5y6p"]
+
+[node name="TaskFilterPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_x5y6p")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.3)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Task Organization"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PrioritySection" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/PrioritySection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Priority"
+
+[node name="PriorityOptions" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PrioritySection"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="HighCheck" type="CheckBox" parent="MarginContainer/VBoxContainer/PrioritySection/PriorityOptions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "High"
+
+[node name="MediumCheck" type="CheckBox" parent="MarginContainer/VBoxContainer/PrioritySection/PriorityOptions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Medium"
+
+[node name="LowCheck" type="CheckBox" parent="MarginContainer/VBoxContainer/PrioritySection/PriorityOptions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Low"
+
+[node name="StatusSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/StatusSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Status"
+
+[node name="StatusOptions" type="HBoxContainer" parent="MarginContainer/VBoxContainer/StatusSection"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PendingCheck" type="CheckBox" parent="MarginContainer/VBoxContainer/StatusSection/StatusOptions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Pending"
+
+[node name="CompletedCheck" type="CheckBox" parent="MarginContainer/VBoxContainer/StatusSection/StatusOptions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Completed"
+
+[node name="TimeSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/TimeSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Time Range"
+
+[node name="TimeRangeOption" type="OptionButton" parent="MarginContainer/VBoxContainer/TimeSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SortSection" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/SortSection"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Sort By"
+
+[node name="SortOptions" type="VBoxContainer" parent="MarginContainer/VBoxContainer/SortSection"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="TimeSort" type="OptionButton" parent="MarginContainer/VBoxContainer/SortSection/SortOptions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+
+[node name="PrioritySort" type="OptionButton" parent="MarginContainer/VBoxContainer/SortSection/SortOptions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+
+[node name="SpatialSort" type="OptionButton" parent="MarginContainer/VBoxContainer/SortSection/SortOptions"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="ClearFilters" type="Button" parent="MarginContainer/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Clear Filters"
+
+[node name="ApplySort" type="Button" parent="MarginContainer/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Apply Sort"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonContainer/ClearFilters" to="." method="_on_clear_filters_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonContainer/ApplySort" to="." method="_on_apply_sort_pressed"]

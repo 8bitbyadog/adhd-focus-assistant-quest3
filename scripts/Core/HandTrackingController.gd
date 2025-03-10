@@ -10,6 +10,10 @@ const GRAB_THRESHOLD := 0.7
 const MENU_GESTURE_TIME := 1.0  # Hold pinch for 1 second to open menu
 const FILTER_GESTURE_TIME := 0.8  # Hold pinch for 0.8 seconds to open filter
 
+# XR Hand constants
+const XR_HAND_LEFT := 0
+const XR_HAND_RIGHT := 1
+
 # Hand states
 var left_hand_active := false
 var right_hand_active := false
@@ -71,17 +75,18 @@ func _process(delta: float) -> void:
     _check_gestures()
     _check_menu_gesture(delta)
     _check_filter_gesture(delta)
+    _update_gesture_feedback()
 
 func _update_hand_states() -> void:
     # Update left hand
-    left_hand_active = xr_interface.is_hand_tracked(XRInterface.HAND_LEFT)
+    left_hand_active = xr_interface.is_hand_tracked(XR_HAND_LEFT)
     if left_hand_active:
-        left_pinch_strength = xr_interface.get_hand_pinch_strength(XRInterface.HAND_LEFT)
+        left_pinch_strength = xr_interface.get_hand_pinch_strength(XR_HAND_LEFT)
     
     # Update right hand
-    right_hand_active = xr_interface.is_hand_tracked(XRInterface.HAND_RIGHT)
+    right_hand_active = xr_interface.is_hand_tracked(XR_HAND_RIGHT)
     if right_hand_active:
-        right_pinch_strength = xr_interface.get_hand_pinch_strength(XRInterface.HAND_RIGHT)
+        right_pinch_strength = xr_interface.get_hand_pinch_strength(XR_HAND_RIGHT)
 
 func _check_gestures() -> void:
     # Check left hand gestures
@@ -149,8 +154,26 @@ func _trigger_filter_gesture() -> void:
         # Trigger haptic feedback
         haptic_manager.trigger_haptic("left", "menu")
 
+func _update_gesture_feedback() -> void:
+    if left_hand_active:
+        var left_transform = get_hand_transform("left")
+        _update_hand_feedback(left_feedback, left_transform, left_pinch_strength)
+    else:
+        left_feedback.hide()
+    
+    if right_hand_active:
+        var right_transform = get_hand_transform("right")
+        _update_hand_feedback(right_feedback, right_transform, right_pinch_strength)
+    else:
+        right_feedback.hide()
+
+func _update_hand_feedback(feedback: Node3D, transform: Transform3D, pinch_strength: float) -> void:
+    if pinch_strength > 0:
+        feedback.position_at_hand(transform.origin, transform.basis)
+        feedback.update_progress(pinch_strength)
+
 func get_hand_transform(hand: String) -> Transform3D:
-    var hand_index = XRInterface.HAND_LEFT if hand == "left" else XRInterface.HAND_RIGHT
+    var hand_index = XR_HAND_LEFT if hand == "left" else XR_HAND_RIGHT
     if xr_interface and xr_interface.is_initialized():
         return xr_interface.get_hand_transform(hand_index)
     return Transform3D()
@@ -159,38 +182,4 @@ func is_hand_active(hand: String) -> bool:
     return left_hand_active if hand == "left" else right_hand_active
 
 func get_pinch_strength(hand: String) -> float:
-    return left_pinch_strength if hand == "left" else right_pinch_strength
-
-func _process(_delta: float) -> void:
-    var left_controller = get_node("/root/Main/XROrigin3D/LeftController")
-    var right_controller = get_node("/root/Main/XROrigin3D/RightController")
-    
-    if left_controller and left_controller.get_is_active():
-        left_pinch_strength = left_controller.get_float("pinch_strength")
-        _update_hand_feedback(left_controller, left_feedback, left_pinch_strength)
-        
-        if left_pinch_strength >= PINCH_THRESHOLD:
-            task_manager.show_filter_panel()
-    else:
-        left_pinch_strength = 0.0
-        left_feedback.hide()
-    
-    if right_controller and right_controller.get_is_active():
-        right_pinch_strength = right_controller.get_float("pinch_strength")
-        _update_hand_feedback(right_controller, right_feedback, right_pinch_strength)
-        
-        if right_pinch_strength >= PINCH_THRESHOLD:
-            task_manager.show_creation_panel()
-    else:
-        right_pinch_strength = 0.0
-        right_feedback.hide()
-
-func _update_hand_feedback(controller: XRController3D, feedback: Node3D, pinch_strength: float) -> void:
-    if pinch_strength > 0:
-        # Get hand position and rotation
-        var hand_position = controller.global_position
-        var hand_rotation = controller.global_transform.basis
-        
-        # Update feedback
-        feedback.position_at_hand(hand_position, hand_rotation)
-        feedback.update_progress(pinch_strength) 
+    return left_pinch_strength if hand == "left" else right_pinch_strength 
