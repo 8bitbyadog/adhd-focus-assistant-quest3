@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://b8ckqx0myyed1"]
+
+[ext_resource type="Script" path="res://scripts/Core/PassthroughManager.gd" id="1_2p4m3"]
+[ext_resource type="Script" path="res://scripts/Core/HandTrackingController.gd" id="2_3k4n5"]
+[ext_resource type="Script" path="res://scripts/Core/UIManager.gd" id="3_4l5m6"]
+[ext_resource type="Script" path="res://scripts/Core/TaskSystem.gd" id="4_5m6n7"]
+[ext_resource type="Script" path="res://scripts/Core/TaskManager.gd" id="5_6n7o8"]
+
+[node name="Main" type="Node3D"]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+
+[node name="PassthroughManager" type="Node3D" parent="."]
+script = ExtResource("1_2p4m3")
+
+[node name="HandTrackingController" type="Node3D" parent="."]
+script = ExtResource("2_3k4n5")
+
+[node name="UIManager" type="Node3D" parent="."]
+script = ExtResource("3_4l5m6")
+
+[node name="TaskSystem" type="Node" parent="."]
+script = ExtResource("4_5m6n7")
+
+[node name="TaskManager" type="Node3D" parent="."]
+script = ExtResource("5_6n7o8") 

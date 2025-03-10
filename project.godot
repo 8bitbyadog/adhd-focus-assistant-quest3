@@ -1,0 +1,35 @@
+[application]
+
+config/name="ADHD Focus Assistant"
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.2", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[xr]
+
+openxr/enabled=true
+shaders/enabled=true
+openxr/hand_tracking=true
+openxr/passthrough=true
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
+
+[display]
+
+window/vsync/vsync_mode=0
+
+[physics]
+
+common/physics_ticks_per_second=90
+
+[input]
+
+toggle_passthrough={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":80,"physical_keycode":0,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
+} 
