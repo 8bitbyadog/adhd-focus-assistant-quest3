@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://clf8ipxpmg2r0"]
+
+[ext_resource type="Script" uid="uid://b5du2djblfcdi" path="res://scripts/Core/PassthroughManager.gd" id="1_2p4m3"]
+
+[node name="TestScene" type="Node3D"]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"left_hand"
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+tracker = &"right_hand"
+
+[node name="PassthroughManager" type="Node3D" parent="."]
+script = ExtResource("1_2p4m3")

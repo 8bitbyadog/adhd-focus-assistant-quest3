@@ -4,6 +4,7 @@ signal task_added(task_id: String)
 signal task_updated(task_id: String)
 signal task_removed(task_id: String)
 signal task_completed(task_id: String)
+signal tasks_displayed(tasks: Array)
 
 # Task priority colors from design spec
 const PRIORITY_COLORS := {
@@ -15,6 +16,7 @@ const PRIORITY_COLORS := {
 # Task storage
 var tasks: Dictionary = {}
 var task_storage: Node
+var displayed_tasks: Array = []
 
 func _ready() -> void:
     task_storage = get_node("/root/Main/TaskStorage")
@@ -78,4 +80,8 @@ func update_task_position(task_id: String, position: Vector3, rotation: Quaterni
         emit_signal("task_updated", task_id)
         
         # Save after updating position
-        task_storage.save_tasks(tasks) 
+        task_storage.save_tasks(tasks)
+
+func update_task_displays(filtered_tasks: Array) -> void:
+    displayed_tasks = filtered_tasks
+    emit_signal("tasks_displayed", displayed_tasks) 

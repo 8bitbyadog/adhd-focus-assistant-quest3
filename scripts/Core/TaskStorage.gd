@@ -5,7 +5,13 @@ const SAVE_FILE_PATH := "user://tasks.json"
 signal tasks_loaded
 signal save_completed
 
+var cached_tasks: Dictionary = {}
+
+func get_tasks() -> Dictionary:
+    return cached_tasks
+
 func save_tasks(tasks: Dictionary) -> void:
+    cached_tasks = tasks
     var task_data := {}
     
     # Convert task objects to serializable dictionaries
@@ -29,6 +35,7 @@ func load_tasks() -> Dictionary:
     
     # Check if save file exists
     if not FileAccess.file_exists(SAVE_FILE_PATH):
+        cached_tasks = tasks
         emit_signal("tasks_loaded")
         return tasks
     
@@ -50,6 +57,7 @@ func load_tasks() -> Dictionary:
     else:
         push_error("Failed to load tasks from file")
     
+    cached_tasks = tasks
     emit_signal("tasks_loaded")
     return tasks
 
@@ -63,6 +71,9 @@ func _ready() -> void:
     save_timer.timeout.connect(_on_auto_save_timer_timeout)
     add_child(save_timer)
     save_timer.start()
+    
+    # Load tasks on startup
+    load_tasks()
 
 func _on_auto_save_timer_timeout() -> void:
     # Get reference to TaskSystem and save current tasks

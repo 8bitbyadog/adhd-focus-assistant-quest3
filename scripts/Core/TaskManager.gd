@@ -13,8 +13,8 @@ var filter_panel: Node3D = null
 @onready var task_storage = $"../TaskStorage"
 @onready var task_sorter = $"../TaskSorter"
 
-var tasks = []
-var filtered_tasks = []
+var tasks: Dictionary = {}
+var filtered_tasks: Array = []
 
 func _ready() -> void:
 	task_system = get_node("/root/Main/TaskSystem")
@@ -34,7 +34,6 @@ func _ready() -> void:
 	task_filter.connect("filters_changed", _on_filters_changed)
 	task_sorter.connect("sort_changed", _on_sort_changed)
 
-	task_storage.load_tasks()
 	tasks = task_storage.get_tasks()
 	_apply_filters_and_sort()
 
@@ -161,7 +160,7 @@ func _on_sort_changed() -> void:
 
 func _apply_filters_and_sort():
 	# First apply filters
-	filtered_tasks = task_filter.apply_filters(tasks.duplicate())
+	filtered_tasks = task_filter.apply_filters(tasks)
 	# Then sort the filtered tasks
 	filtered_tasks = task_sorter.sort_tasks(filtered_tasks)
 	# Update task system with filtered and sorted tasks
@@ -170,7 +169,8 @@ func _apply_filters_and_sort():
 func _update_card_visibility(task_id: String) -> void:
 	var task = task_system.get_task(task_id)
 	if task and task_id in active_tasks:
-		var should_show = task_filter.apply_filters([task]).size() > 0
+		var task_array = [task]
+		var should_show = task_filter.apply_filters(task_array).size() > 0
 		active_tasks[task_id].visible = should_show
 
 # Helper function to create a test task

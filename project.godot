@@ -10,16 +10,30 @@ config_version=5
 
 [application]
 
-config/name="ADHD Focus Assistant"
-run/main_scene="res://scenes/Main.tscn"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/name="XR ADHD HUD"
+run/main_scene="res://scenes/MinimalXR.tscn"
+config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+XRBootstrap="*res://scripts/xr_bootstrap.gd"
 
 [display]
 
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=3
+window/size/resizable=false
 window/vsync/vsync_mode=0
 
 [input]
+
+toggle_vr={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":86,"physical_keycode":0,"key_label":0,"unicode":118,"echo":false,"script":null)
+]
+}
 
 toggle_passthrough={
 "deadzone": 0.5,
@@ -30,16 +44,31 @@ toggle_passthrough={
 [physics]
 
 common/physics_ticks_per_second=90
+common/max_physics_steps_per_frame=16
 
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+anti_aliasing/quality/msaa_3d=2
+xr/enabled=true
+occlusion_culling/use_occlusion_culling=false
 
 [xr]
 
 openxr/enabled=true
 shaders/enabled=true
 openxr/hand_tracking=true
+openxr/hand_tracking_frequency_high=true
 openxr/passthrough=true
+openxr/startup_alert=false
+openxr/submit_depth_buffer=true
+openxr/foveation_level=0
+openxr/foveation_dynamic=false
+openxr/render_target_size_multiplier=1.0
+openxr/form_factor=1
+openxr/view_configuration=1
+openxr/reference_space=1
+openxr/startup_runtime_override="oculus"
+openxr/composition_layer_depth_test=false

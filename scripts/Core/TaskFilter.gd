@@ -32,10 +32,16 @@ func clear_filters() -> void:
     time_range = "all_time"
     emit_signal("filters_changed")
 
-func apply_filters(tasks: Array) -> Array:
+func apply_filters(tasks_input) -> Array:
+    var tasks_array: Array
+    if tasks_input is Dictionary:
+        tasks_array = tasks_input.values()
+    else:
+        tasks_array = tasks_input
+    
     var filtered_tasks: Array = []
     
-    for task in tasks:
+    for task in tasks_array:
         if _task_matches_filters(task):
             filtered_tasks.append(task)
     
